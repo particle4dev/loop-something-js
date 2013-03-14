@@ -12,14 +12,15 @@ var LoopSomething = (function(){
 			 *
 			 * @param d     delay time
 			 * @param t     a function to execute 
-			 *
+			 * @param [o]   a object (has a function to execute)
 			**/   
-  			var f = function(d, t){
+  			var f = function(d, t, o){
   				/** 
 			     * Private property
 			    **/
     			var self = this;
-    			var delay = (d === null) ? 1000 : d;    
+    			var delay = (d === null) ? 1000 : d;
+    			var object = (o === null) ? null : o;   
     			var todo = t,
     			start = 0,end = 2*delay,
         		run = true;
@@ -68,9 +69,13 @@ var LoopSomething = (function(){
 			    **/
 			    var remind = function(func, args){
 			    	if(run === true){
+			    		console.log("Object Loop : ");
 			    		console.log(this);
 				      	start = getTime();
-				      	func.apply(func, args);
+				      	if(object == null)
+				      		func.apply(func, args);
+				      	else
+				      		func.apply(object, args);
                         var callback = args[args.length-1];
                         if(typeof callback == 'function')
                         callback();  
@@ -127,6 +132,5 @@ var LoopSomething = (function(){
     				return run;
     			}
   			};
-  			return f;
-  
+  			return f;  
 		})();
